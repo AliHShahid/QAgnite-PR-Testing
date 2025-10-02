@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 style="color:#ff5757; text-align:center; margin-bottom:1rem;">Recent Pull Requests</h2>
+
+<table role="grid"
+  style="width:100%; border-collapse:collapse; background:#111; color:#ff5757; border:1px solid #ff5757;">
+  <thead>
+    <tr style="background:#222; color:#ff5757; text-align:left;">
+      <th style="padding:0.75rem; border-bottom:1px solid #ff5757;">Repo</th>
+      <th style="padding:0.75rem; border-bottom:1px solid #ff5757;">#</th>
+      <th style="padding:0.75rem; border-bottom:1px solid #ff5757;">Title</th>
+      <th style="padding:0.75rem; border-bottom:1px solid #ff5757;">Status</th>
+      <th style="padding:0.75rem; border-bottom:1px solid #ff5757;">Updated</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for pr in prs %}
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:0.75rem;">{{ pr.project.repo_full_name }}</td>
+      <td style="padding:0.75rem;">
+        <a href="/pr/{{ pr.project.repo_full_name }}/{{ pr.number }}/" style="color:#ff5757; text-decoration:none;">
+          #{{ pr.number }}
+        </a>
+      </td>
+      <td style="padding:0.75rem;">{{ pr.title }}</td>
+      <td style="padding:0.75rem;">
+        <span class="status-badge 
+          {% if pr.status == 'success' %}status-success
+          {% elif pr.status == 'failure' %}status-failure
+          {% else %}status-pending{% endif %}">
+          {{ pr.status }}
+        </span>
+      </td>
+      <td style="padding:0.75rem;">{{ pr.updated_at }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="5" style="text-align:center; padding:1rem; color:#888;">
+        No PRs yet.
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

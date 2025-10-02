@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>AI QA & Testing Agent</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/static/favicon.ico" />
+
+  <!-- Pico CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+  <!-- Google Fonts (August / fallback) -->
+  <!-- Google Fonts (August Sans) -->
+  <link href="https://fonts.googleapis.com/css2?family=August+Sans:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #000;
+      /* Black background */
+      color: #ff5757;
+      /* Custom text color */
+      font-family: 'August', sans-serif;
+      /* Font */
+    }
+
+    a,
+    strong,
+    small {
+      color: #ff5757;
+    }
+
+    nav a:hover {
+      color: #fff;
+    }
+
+    .status-badge {
+      padding: 0.1rem 0.5rem;
+      border-radius: 0.5rem;
+    }
+
+    .status-success {
+      background: #e7f9ed;
+      color: #137333;
+    }
+
+    .status-failure {
+      background: #fde8e7;
+      color: #b00020;
+    }
+
+    .status-pending {
+      background: #eef2ff;
+      color: #1e40af;
+    }
+
+    pre {
+      white-space: pre-wrap;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+  <header class="container">
+    <nav>
+      <ul>
+        <li><strong>Quality Assurance and Software Testing</strong></li>
+        <li style="color: chartreuse;"> Agent</li>
+      </ul>
+      <ul>
+        <li><a href="/">Dashboard</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="container">
+    <small>© {{ now|default:"" }} QA Agent</small>
+  </footer>
+</body>
+
+</html>

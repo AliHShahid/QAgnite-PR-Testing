@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ pr.project.repo_full_name }} #{{ pr.number }}</h2>
+<p>{{ pr.title }}</p>
+<p>Status:
+  <span class="status-badge {% if pr.status == 'success' %}status-success{% elif pr.status == 'failure' %}status-failure{% else %}status-pending{% endif %}">
+    {{ pr.status }}
+  </span>
+</p>
+
+<article>
+  <header><strong>Test Runs</strong></header>
+  <canvas id="runsChart" height="120"></canvas>
+  <script>
+    const ctx = document.getElementById('runsChart');
+    const labels = [{% for r in runs %}"{{ r.started_at|date:'H:i:s' }}"{% if not forloop.last %},{% endif %}{% endfor %}].reverse();
+    const passed = [{% for r in runs %}{{ r.passed }}{% if not forloop.last %},{% endif %}{% endfor %}].reverse();
+    const failed = [{% for r in runs %}{{ r.failed }}{% if not forloop.last %},{% endif %}{% endfor %}].reverse();
+    const errors = [{% for r in runs %}{{ r.errors }}{% if not forloop.last %},{% endif %}{% endfor %}].reverse();
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          { label: 'Passed', data: passed, backgroundColor: '#16a34a' },
+          { label: 'Failed', data: failed, backgroundColor: '#dc2626' },
+          { label: 'Errors', data: errors, backgroundColor: '#f59e0b' },
+        ]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true } } }
+    });
+  </script>
+</article>
+
+{% for run in runs %}
+<details>
+  <summary>{{ run.started_at }} — passed {{ run.passed }}, failed {{ run.failed }}, errors {{ run.errors }}</summary>
+  <pre>{{ run.raw_output|truncatechars:8000 }}</pre>
+</details>
+{% empty %}
+<p>No runs yet.</p>
+{% endfor %}
+{% endblock %}
